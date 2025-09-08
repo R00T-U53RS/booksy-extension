@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
+import BookmarkHeader from "@/components/bookmark/Header";
 
 const App = () => {
   return (
-    <div className="flex items-center justify-center h-[600px] w-[400px]">
-      <Button>Click me</Button>
+    <div className="h-[600px] w-[400px]">
+      <BookmarkHeader />
     </div>
-  )
-}
+  );
+};
 
 export default App;
