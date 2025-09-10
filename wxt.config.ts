@@ -17,5 +17,6 @@ export default defineConfig({
   manifest: {
     name: 'Booksy',
     description: 'Extension to manage and sync cross-browser bookmarks',
+    permissions: ["bookmarks"],
   },
 });

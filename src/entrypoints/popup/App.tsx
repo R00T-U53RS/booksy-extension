@@ -1,9 +1,9 @@
-import BookmarkHeader from "@/components/bookmark/Header";
+import Bookmark from "@/components/bookmark/Bookmark";
 
 const App = () => {
   return (
     <div className="h-[600px] w-[400px]">
-      <BookmarkHeader />
+      <Bookmark />
     </div>
   );
 };
