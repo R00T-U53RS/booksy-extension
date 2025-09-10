@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
+import Bookmark from "@/components/bookmark/Bookmark";
 
 const App = () => {
   return (
-    <div className="flex items-center justify-center h-[600px] w-[400px]">
-      <Button>Click me</Button>
+    <div className="h-[600px] w-[400px]">
+      <Bookmark />
     </div>
-  )
-}
+  );
+};
 
 export default App;
