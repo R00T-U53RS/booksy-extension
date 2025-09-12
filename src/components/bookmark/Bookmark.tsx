@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
-import BookmarkHeader from "@/components/bookmark/Header";
-import BookmarkList from "@/components/bookmark/List";
-import { BookmarkTreeNode } from "@/components/types/bookmark";
+import { useState, useEffect } from 'react';
+import BookmarkHeader from '@/components/bookmark/Header';
+import BookmarkList from '@/components/bookmark/List';
+import { BookmarkTreeNode } from '@/components/types/bookmark';
+import { Profile } from '@/components/types/profile';
 
-const Bookmark = () => {
+const Bookmark = ({ profile }: { profile: Profile }) => {
   const [bookmark, setBookmarks] = useState<BookmarkTreeNode>();
 
   useEffect(() => {
@@ -16,8 +17,8 @@ const Bookmark = () => {
   }, []);
 
   return (
-    <div className="w-full">
-      <BookmarkHeader />
+    <div className='w-full overflow-hidden'>
+      <BookmarkHeader profile={profile} />
       {bookmark?.children ? (
         <BookmarkList bookmark={bookmark.children} />
       ) : (
