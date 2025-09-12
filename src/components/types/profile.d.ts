@@ -1,5 +1,7 @@
-export type Profile = {
+import { ReactNode } from 'react';
+
+export interface Profile {
   id: string;
   name: string;
-  icon: React.ReactNode;
-};
+  icon: ReactNode;
+}

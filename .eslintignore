@@ -1,0 +1,9 @@
+node_modules
+dist
+components/ui
+.wxt
+*.min.js
+*.min.css
+eslint.config.js
+wxt.config.ts
+web-ext.config.ts
