@@ -8,7 +8,7 @@ interface BookmarkListProps {
 
 const BookmarkList = ({ bookmark }: BookmarkListProps) => {
   return (
-    <div className="flex flex-col p-4 gap-4">
+    <div className="flex flex-col p-4 gap-4 h-full overflow-y-auto">
       <Input type="text" placeholder="Search bookmarks..." />
       <BookmarkItem bookmark={bookmark} />
     </div>
