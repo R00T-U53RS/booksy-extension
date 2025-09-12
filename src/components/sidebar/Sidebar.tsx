@@ -19,7 +19,6 @@ const Sidebar = ({
 
   return (
     <div className='flex flex-col items-center w-24 bg-slate-950'>
-      {/* Profile Section */}
       <div className='flex items-center justify-center py-6'>
         <Avatar className='w-12 h-12'>
           <AvatarImage src='https://github.com/shadcn.png' />
@@ -29,7 +28,6 @@ const Sidebar = ({
         </Avatar>
       </div>
 
-      {/* Navigation Items */}
       <div className='flex flex-col space-y-4 flex-1'>
         {profileItems.map(item => (
           <div
@@ -57,7 +55,6 @@ const Sidebar = ({
         ))}
       </div>
 
-      {/* Add Button */}
       <div className='px-2 pb-4'>
         <div className='flex items-center justify-center w-14 h-14 border-2 border-dashed border-slate-600 text-slate-600 hover:text-slate-500 rounded-lg cursor-pointer hover:border-slate-500 transition-colors duration-200'>
           <Plus className='w-6 h-6' />
