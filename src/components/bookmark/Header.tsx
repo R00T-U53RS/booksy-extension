@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Profile } from '@/components/types/profile';
+import { BrowserDisplayInfo } from '@/components/types/browser';
 
-const BookmarkHeader = ({ profile }: { profile: Profile }) => {
+const BookmarkHeader = ({ profile }: { profile: BrowserDisplayInfo }) => {
   return (
     <div className='flex flex-col p-4 gap-4 border-b border-gray-200'>
       <div className='flex justify-between items-center'>

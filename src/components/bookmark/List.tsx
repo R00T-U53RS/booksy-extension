@@ -7,7 +7,7 @@ interface BookmarkListProps {
 
 const BookmarkList = ({ bookmark }: BookmarkListProps) => {
   return (
-    <div className='flex flex-col p-4 gap-4 h-full overflow-y-auto'>
+    <div className='flex flex-col p-4 gap-4'>
       <BookmarkItem bookmark={bookmark} />
     </div>
   );
