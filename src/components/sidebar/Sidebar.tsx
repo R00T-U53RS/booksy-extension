@@ -81,7 +81,7 @@ const Sidebar = ({
               </span>
             </div>
             {browser.isConnected && (
-              <div className='absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-slate-950' />
+              <div className='absolute top-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-slate-950' />
             )}
           </div>
         ))}

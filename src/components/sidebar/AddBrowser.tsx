@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Monitor, Smartphone } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -51,13 +51,13 @@ const AddBrowser = ({ onBack, onCreateBrowser }: AddBrowserProps) => {
 
   const getBrowserIcon = (type: BrowserType) => {
     const iconMap = {
-      chrome: <img src={chrome} alt='Chrome' className='w-6 h-6' />,
-      firefox: <img src={firefox} alt='Firefox' className='w-6 h-6' />,
-      safari: <img src={safari} alt='Safari' className='w-6 h-6' />,
-      edge: <img src={edge} alt='Edge' className='w-6 h-6' />,
-      brave: <img src={brave} alt='Brave' className='w-6 h-6' />,
-      opera: <img src={opera} alt='Opera' className='w-6 h-6' />,
-      other: <Monitor className='w-6 h-6 text-gray-500' />,
+      chrome: <img src={chrome} alt='Chrome' />,
+      firefox: <img src={firefox} alt='Firefox' />,
+      safari: <img src={safari} alt='Safari' />,
+      edge: <img src={edge} alt='Edge' />,
+      brave: <img src={brave} alt='Brave' />,
+      opera: <img src={opera} alt='Opera' />,
+      other: <div className='w-6 h-6 bg-gray-400 rounded' />,
     };
     return iconMap[type];
   };
@@ -72,22 +72,12 @@ const AddBrowser = ({ onBack, onCreateBrowser }: AddBrowserProps) => {
     }));
   };
 
-  const handleProfileChange = (profileName: string) => {
-    setFormData(prev => ({
-      ...prev,
-      profileName,
-      name: selectedBrowser
-        ? `${selectedBrowser.name} - ${profileName}`
-        : prev.name,
-    }));
-  };
-
   const handleCustomNameChange = (name: string) => {
     setFormData(prev => ({ ...prev, name }));
   };
 
   const handleSubmit = () => {
-    if (formData.name.trim() && formData.profileName.trim()) {
+    if (formData.name.trim()) {
       onCreateBrowser(formData);
     }
   };
@@ -112,13 +102,13 @@ const AddBrowser = ({ onBack, onCreateBrowser }: AddBrowserProps) => {
             Select Browser
           </h3>
 
-          <div className='grid grid-cols-1 gap-2'>
+          <div className='grid grid-cols-2 gap-4'>
             {availableBrowsers.map(browser => (
               <button
                 key={browser.type}
                 onClick={() => handleBrowserSelect(browser)}
                 className={`
-                  flex items-center gap-3 p-3 rounded-lg border-2 transition-all text-left
+                  relative flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all
                   ${
                     selectedBrowser?.type === browser.type
                       ? 'border-primary bg-primary/10'
@@ -126,20 +116,15 @@ const AddBrowser = ({ onBack, onCreateBrowser }: AddBrowserProps) => {
                   }
                 `}
               >
+                {browser.isInstalled && (
+                  <div className='absolute top-2 right-2 w-2 h-2 bg-green-500 rounded-full' />
+                )}
                 <div className='flex items-center justify-center w-8 h-8'>
                   {getBrowserIcon(browser.type)}
                 </div>
-                <div className='flex-1 min-w-0'>
-                  <div className='text-sm font-medium text-foreground truncate'>
-                    {browser.name}
-                  </div>
-                  <div className='text-xs text-muted-foreground'>
-                    {browser.isInstalled ? '✓ Detected' : 'Not detected'}
-                  </div>
+                <div className='text-sm font-medium text-foreground text-center'>
+                  {browser.name}
                 </div>
-                {browser.isInstalled && (
-                  <div className='w-2 h-2 bg-green-500 rounded-full' />
-                )}
               </button>
             ))}
           </div>
@@ -148,56 +133,25 @@ const AddBrowser = ({ onBack, onCreateBrowser }: AddBrowserProps) => {
         {selectedBrowser && (
           <div className='space-y-4'>
             <h3 className='text-sm font-semibold text-foreground'>
-              Browser Profile
+              Connection Details
             </h3>
 
             <div className='space-y-2'>
               <label className='text-xs font-medium text-muted-foreground'>
-                Select Profile
+                Display Name
               </label>
-              <div className='grid grid-cols-1 gap-2'>
-                {selectedBrowser.profiles.map(profile => (
-                  <button
-                    key={profile}
-                    onClick={() => handleProfileChange(profile)}
-                    className={`
-                      flex items-center gap-2 p-2 rounded border transition-all text-left text-sm
-                      ${
-                        formData.profileName === profile
-                          ? 'border-primary bg-primary/10 text-primary'
-                          : 'border-border hover:border-muted-foreground bg-card text-foreground'
-                      }
-                    `}
-                  >
-                    <Smartphone className='w-4 h-4' />
-                    {profile}
-                  </button>
-                ))}
-              </div>
+              <Input
+                placeholder={`e.g., ${selectedBrowser.name} - Work`}
+                value={formData.name}
+                onChange={e => handleCustomNameChange(e.target.value)}
+                className='h-8 text-sm'
+              />
+              <p className='text-xs text-muted-foreground'>
+                This name will appear in your sidebar
+              </p>
             </div>
           </div>
         )}
-
-        <div className='space-y-4'>
-          <h3 className='text-sm font-semibold text-foreground'>
-            Connection Details
-          </h3>
-
-          <div className='space-y-2'>
-            <label className='text-xs font-medium text-muted-foreground'>
-              Display Name
-            </label>
-            <Input
-              placeholder='e.g., Chrome - Work Account'
-              value={formData.name}
-              onChange={e => handleCustomNameChange(e.target.value)}
-              className='h-8 text-sm'
-            />
-            <p className='text-xs text-muted-foreground'>
-              This name will appear in your sidebar
-            </p>
-          </div>
-        </div>
 
         <div className='p-3 bg-muted/50 rounded-lg border border-border'>
           <div className='flex items-start gap-2'>
@@ -224,7 +178,7 @@ const AddBrowser = ({ onBack, onCreateBrowser }: AddBrowserProps) => {
         </Button>
         <Button
           onClick={handleSubmit}
-          disabled={!formData.name.trim() || !formData.profileName.trim()}
+          disabled={!formData.name.trim()}
           className='flex-2 h-8 text-sm'
         >
           Sync Bookmarks
