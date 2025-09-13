@@ -1,4 +1,3 @@
-import { Input } from '@/components/ui/input';
 import BookmarkItem from '@/components/bookmark/Item';
 import { BookmarkTreeNode } from '@/components/types/bookmark';
 
@@ -8,8 +7,7 @@ interface BookmarkListProps {
 
 const BookmarkList = ({ bookmark }: BookmarkListProps) => {
   return (
-    <div className='flex flex-col p-4 gap-4 h-full overflow-y-auto'>
-      <Input type='text' placeholder='Search bookmarks...' />
+    <div className='flex flex-col p-4 gap-4'>
       <BookmarkItem bookmark={bookmark} />
     </div>
   );
