@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Profile } from '@/components/types/profile';
 
 const BookmarkHeader = ({ profile }: { profile: Profile }) => {
@@ -10,8 +11,9 @@ const BookmarkHeader = ({ profile }: { profile: Profile }) => {
           8 bookmarks
         </div>
       </div>
-      <div>
+      <div className='flex flex-col gap-3'>
         <Button className='w-full bg-blue-400'>Add Current Page</Button>
+        <Input type='text' placeholder='Search bookmarks...' />
       </div>
     </div>
   );
