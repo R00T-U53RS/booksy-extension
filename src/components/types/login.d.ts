@@ -1,30 +1,25 @@
-export interface LoginProps {
-  onLogin: () => void;
-}
-
 export interface LoginFormData {
-  email: string;
+  username: string;
   password: string;
 }
 
 export interface RegisterFormData {
+  username: string;
   email: string;
   password: string;
-  name?: string;
 }
 
-export interface LoginFormErrors {
-  email?: string;
-  password?: string;
-  general?: string;
+export interface RegisterFormResponse {
+  message: string;
+  user: User;
 }
 
 export interface User {
   id: string;
   email: string;
-  name?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  username: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface AuthResponse {

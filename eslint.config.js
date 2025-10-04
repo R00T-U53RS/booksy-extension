@@ -14,6 +14,8 @@ export default tseslint.config(
       '*.min.css',
       'wxt.config.ts',
       'web-ext.config.ts',
+      'eslint.config.js',
+      'src/components/ui/**',
     ],
   },
   {

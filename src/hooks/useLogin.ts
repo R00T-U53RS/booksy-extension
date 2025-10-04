@@ -22,10 +22,6 @@ export const useLogin = () => {
 
   const registerMutation = useMutation({
     mutationFn: authApi.register,
-    onSuccess: data => {
-      setToken(data.accessToken);
-      queryClient.setQueryData(['auth', 'me'], data.user);
-    },
   });
 
   const loginMutation = useMutation({

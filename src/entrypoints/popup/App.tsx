@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-import Login from '@/components/login/Login';
+import Auth from '@/components/login/Auth';
 import Sidebar from '@/components/sidebar/Sidebar';
 import Bookmark from '@/components/bookmark/Bookmark';
 import AddBrowser from '@/components/sidebar/AddBrowser';
 import { Browser, NewBrowserFormData } from '@/components/types/browser';
 import { chrome, brave, firefox, safari, edge, opera } from '@/assets/assets';
+import { useLogin } from '@/hooks/useLogin';
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const { isAuthenticated, isLoading, logout } = useLogin();
   const [showAddBrowser, setShowAddBrowser] = useState(false);
   const [browsers, setBrowsers] = useState<Browser[]>([]);
   const [currentBrowser, setCurrentBrowser] = useState<Browser | null>(null);
@@ -26,46 +26,8 @@ const App = () => {
     return iconMap[type] || <div className='w-6 h-6 bg-gray-400 rounded' />;
   };
 
-  useEffect(() => {
-    const checkAuthStatus = () => {
-      try {
-        const isAuth = localStorage.getItem('booksy_authenticated');
-        const loginTimestamp = localStorage.getItem('booksy_login_timestamp');
-
-        if (isAuth === 'true' && loginTimestamp) {
-          const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
-          const isWithinValidPeriod =
-            Date.now() - parseInt(loginTimestamp) < thirtyDaysInMs;
-
-          if (isWithinValidPeriod) {
-            setIsAuthenticated(true);
-          } else {
-            localStorage.removeItem('booksy_authenticated');
-            localStorage.removeItem('booksy_user_email');
-            localStorage.removeItem('booksy_login_method');
-            localStorage.removeItem('booksy_login_timestamp');
-          }
-        }
-      } catch (error) {
-        console.error('Error checking auth status:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    checkAuthStatus();
-  }, []);
-
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-  };
-
   const handleLogout = () => {
-    localStorage.removeItem('booksy_authenticated');
-    localStorage.removeItem('booksy_user_email');
-    localStorage.removeItem('booksy_login_method');
-    localStorage.removeItem('booksy_login_timestamp');
-    setIsAuthenticated(false);
+    logout();
   };
 
   const handleCreateBrowser = (browserData: NewBrowserFormData) => {
@@ -97,7 +59,7 @@ const App = () => {
   }
 
   if (!isAuthenticated) {
-    return <Login onLogin={handleLogin} />;
+    return <Auth />;
   }
 
   return (

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Eye, EyeOff, LogIn, Mail, Lock } from 'lucide-react';
+import { Eye, EyeOff, UserPlus, Mail, Lock, User } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
@@ -7,26 +7,27 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { google } from '@/assets/assets';
 import { useLogin } from '@/hooks/useLogin';
-import { LoginFormData } from '@/components/types/login';
+import { RegisterFormData } from '@/components/types/login';
 
-const Login = () => {
+const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const { login, isLoggingIn, loginError } = useLogin();
+  const { register: registerUser, isRegistering, registerError } = useLogin();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>({
+  } = useForm<RegisterFormData>({
     defaultValues: {
       username: '',
+      email: '',
       password: '',
     },
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    login(data);
+  const onSubmit = (data: RegisterFormData) => {
+    registerUser(data);
   };
 
   const handleGoogleLogin = async () => {
@@ -50,7 +51,7 @@ const Login = () => {
               Username
             </label>
             <div className='relative'>
-              <Mail className='absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground' />
+              <User className='absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground' />
               <Input
                 id='username'
                 type='text'
@@ -68,6 +69,39 @@ const Login = () => {
               <p className='text-sm text-destructive'>
                 {errors.username.message}
               </p>
+            )}
+          </div>
+
+          <div className='space-y-2'>
+            <label
+              htmlFor='email'
+              className='text-sm font-medium text-foreground'
+            >
+              Email
+            </label>
+            <div className='relative'>
+              <Mail className='absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground' />
+              <Input
+                id='email'
+                type='email'
+                placeholder='Enter your email'
+                {...register('email', {
+                  required: 'Email is required',
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: 'Please enter a valid email address',
+                  },
+                })}
+                className={cn(
+                  'pl-10',
+                  errors.email &&
+                    'border-destructive focus-visible:ring-destructive/20'
+                )}
+                aria-invalid={!!errors.email}
+              />
+            </div>
+            {errors.email && (
+              <p className='text-sm text-destructive'>{errors.email.message}</p>
             )}
           </div>
 
@@ -111,24 +145,25 @@ const Login = () => {
             )}
           </div>
 
-          {loginError && (
+          {registerError && (
             <div className='p-3 rounded-md bg-destructive/10 border border-destructive/20'>
               <p className='text-sm text-destructive'>
-                {loginError?.message || 'Login failed. Please try again.'}
+                {registerError?.message ||
+                  'Registration failed. Please try again.'}
               </p>
             </div>
           )}
 
-          <Button type='submit' className='w-full' disabled={isLoggingIn}>
-            {isLoggingIn ? (
+          <Button type='submit' className='w-full' disabled={isRegistering}>
+            {isRegistering ? (
               <div className='flex items-center gap-2'>
                 <div className='w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin' />
-                Signing in...
+                Creating account...
               </div>
             ) : (
               <div className='flex items-center gap-2'>
-                <LogIn className='w-4 h-4' />
-                Sign In
+                <UserPlus className='w-4 h-4' />
+                Create Account
               </div>
             )}
           </Button>
@@ -148,12 +183,12 @@ const Login = () => {
           variant='outline'
           className='w-full mb-4'
           onClick={handleGoogleLogin}
-          disabled={isLoggingIn}
+          disabled={isRegistering}
         >
-          {isLoggingIn ? (
+          {isRegistering ? (
             <div className='flex items-center gap-2'>
               <div className='w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin' />
-              Signing in...
+              Creating account...
             </div>
           ) : (
             <div className='flex items-center gap-2'>
@@ -171,4 +206,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
