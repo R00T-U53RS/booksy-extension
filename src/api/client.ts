@@ -1,4 +1,5 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import { BackendErrorResponse } from '@/components/types/login';
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || 'http://localhost:3002';
@@ -38,17 +39,11 @@ apiClient.interceptors.request.use(
 
 apiClient.interceptors.response.use(
   response => response,
-  (error: AxiosError) => {
+  (error: AxiosError<BackendErrorResponse>) => {
     if (error.response?.status === 401) {
       removeToken();
     }
 
-    const formattedError = {
-      message: error.message,
-      status: error.response?.status,
-      data: error.response?.data,
-    };
-
-    return Promise.reject(formattedError);
+    return Promise.reject(error.response?.data || error);
   }
 );

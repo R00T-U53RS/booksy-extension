@@ -27,6 +27,12 @@ export interface AuthResponse {
   user: User;
 }
 
+export interface BackendErrorResponse {
+  message: string;
+  error?: string;
+  statusCode?: number;
+}
+
 export interface AuthError {
   message: string;
   errors?: Record<string, string[]>;
