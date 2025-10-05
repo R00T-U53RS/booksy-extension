@@ -9,11 +9,6 @@ export interface RegisterFormData {
   password: string;
 }
 
-export interface RegisterFormResponse {
-  message: string;
-  user: User;
-}
-
 export interface User {
   id: string;
   email: string;
