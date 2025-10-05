@@ -4,15 +4,11 @@ import type {
   RegisterFormData,
   AuthResponse,
   User,
-  RegisterFormResponse,
 } from '@/components/types/login';
 
 export const authApi = {
-  register: async (data: RegisterFormData): Promise<RegisterFormResponse> => {
-    const response = await apiClient.post<RegisterFormResponse>(
-      '/auth/register',
-      data
-    );
+  register: async (data: RegisterFormData): Promise<AuthResponse> => {
+    const response = await apiClient.post<AuthResponse>('/auth/register', data);
     return response.data;
   },
 
