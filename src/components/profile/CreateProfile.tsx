@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { CreateBookmarkSetRequest } from '@/api/bookmarkSet';
+import { CreateProfileRequest } from '@/api/profile';
 
 interface CreateProfileProps {
   onBack: () => void;
-  onCreateProfile: (data: CreateBookmarkSetRequest) => void;
+  onCreateProfile: (data: CreateProfileRequest) => void;
   isCreating?: boolean;
 }
 
@@ -15,7 +15,7 @@ const CreateProfile = ({
   onCreateProfile,
   isCreating,
 }: CreateProfileProps) => {
-  const [formData, setFormData] = useState<CreateBookmarkSetRequest>({
+  const [formData, setFormData] = useState<CreateProfileRequest>({
     name: '',
     description: '',
   });

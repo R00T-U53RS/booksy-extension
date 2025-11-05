@@ -1,35 +1,35 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { bookmarkSetApi, type BookmarkSet } from '@/api/bookmarkSet';
+import { profileApi, type Profile } from '@/api/profile';
 import { getToken } from '@/api/client';
 
-export const useBookmarkSets = () => {
+export const useProfiles = () => {
   const queryClient = useQueryClient();
   const hasToken = !!getToken();
 
   const {
-    data: bookmarkSets,
+    data: profiles,
     isLoading,
     error,
     refetch,
   } = useQuery({
-    queryKey: ['bookmark-sets'],
-    queryFn: bookmarkSetApi.getAll,
+    queryKey: ['profiles'],
+    queryFn: profileApi.getAll,
     enabled: hasToken,
     retry: false,
   });
 
   const createMutation = useMutation({
-    mutationFn: bookmarkSetApi.create,
-    onSuccess: newBookmarkSet => {
-      // Add the new bookmark set to the existing cache instead of refetching
-      queryClient.setQueryData<BookmarkSet[]>(['bookmark-sets'], oldData => {
-        return [...(oldData || []), newBookmarkSet];
+    mutationFn: profileApi.create,
+    onSuccess: newProfile => {
+      // Add the new profile to the existing cache instead of refetching
+      queryClient.setQueryData<Profile[]>(['profiles'], oldData => {
+        return [...(oldData || []), newProfile];
       });
     },
   });
 
   return {
-    bookmarkSets: bookmarkSets || [],
+    profiles: profiles || [],
     isLoading,
     error,
     refetch,

@@ -1,10 +1,10 @@
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { BookmarkSet } from '@/api/bookmarkSet';
+import { Profile } from '@/api/profile';
 
 interface ProfileListProps {
-  profiles: BookmarkSet[];
-  onSelectProfile: (profile: BookmarkSet) => void;
+  profiles: Profile[];
+  onSelectProfile: (profile: Profile) => void;
   onCreateProfile: () => void;
   isLoading?: boolean;
 }

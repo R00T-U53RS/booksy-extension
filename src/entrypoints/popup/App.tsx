@@ -6,34 +6,32 @@ import Bookmark from '@/components/bookmark/Bookmark';
 import ProfileList from '@/components/profile/ProfileList';
 import CreateProfile from '@/components/profile/CreateProfile';
 import { Browser } from '@/components/types/browser';
-import { BookmarkSet, CreateBookmarkSetRequest } from '@/api/bookmarkSet';
+import { Profile, CreateProfileRequest } from '@/api/profile';
 import { useLogin } from '@/hooks/useLogin';
-import { useBookmarkSets } from '@/hooks/useBookmarkSets';
+import { useProfiles } from '@/hooks/useProfiles';
 
 const SELECTED_PROFILE_KEY = 'booksy_selected_profile_id';
 
 const App = () => {
   const { isAuthenticated, isLoading: isLoadingAuth, logout } = useLogin();
   const {
-    bookmarkSets,
+    profiles,
     isLoading: isLoadingProfiles,
     create: createProfile,
     isCreating,
-  } = useBookmarkSets();
+  } = useProfiles();
 
   const [showCreateProfile, setShowCreateProfile] = useState(false);
   const [browsers, setBrowsers] = useState<Browser[]>([]);
-  const [selectedProfile, setSelectedProfile] = useState<BookmarkSet | null>(
-    null
-  );
+  const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
   const [showProfileList, setShowProfileList] = useState(false);
 
   // Load selected profile from localStorage and check if it still exists
   useEffect(() => {
-    if (isAuthenticated && !isLoadingProfiles && bookmarkSets.length > 0) {
+    if (isAuthenticated && !isLoadingProfiles && profiles.length > 0) {
       const selectedProfileId = localStorage.getItem(SELECTED_PROFILE_KEY);
       if (selectedProfileId) {
-        const profile = bookmarkSets.find(p => p.id === selectedProfileId);
+        const profile = profiles.find(p => p.id === selectedProfileId);
         if (profile) {
           setSelectedProfile(profile);
           setShowProfileList(false);
@@ -42,15 +40,11 @@ const App = () => {
       }
       // If no selected profile or selected profile doesn't exist, show profile list
       setShowProfileList(true);
-    } else if (
-      isAuthenticated &&
-      !isLoadingProfiles &&
-      bookmarkSets.length === 0
-    ) {
+    } else if (isAuthenticated && !isLoadingProfiles && profiles.length === 0) {
       // No profiles exist, show profile list (which will show create option)
       setShowProfileList(true);
     }
-  }, [isAuthenticated, isLoadingProfiles, bookmarkSets]);
+  }, [isAuthenticated, isLoadingProfiles, profiles]);
 
   // Reset state on logout
   useEffect(() => {
@@ -67,7 +61,7 @@ const App = () => {
     logout();
   };
 
-  const handleSelectProfile = (profile: BookmarkSet) => {
+  const handleSelectProfile = (profile: Profile) => {
     setSelectedProfile(profile);
     setShowProfileList(false);
 
@@ -80,7 +74,7 @@ const App = () => {
     setShowProfileList(false);
   };
 
-  const handleCreateProfileSubmit = (data: CreateBookmarkSetRequest) => {
+  const handleCreateProfileSubmit = (data: CreateProfileRequest) => {
     createProfile(data, {
       onSuccess: newProfile => {
         setSelectedProfile(newProfile);
@@ -113,7 +107,7 @@ const App = () => {
           onBack={() => {
             setShowCreateProfile(false);
             // If no profiles exist, show profile list
-            if (bookmarkSets.length === 0) {
+            if (profiles.length === 0) {
               setShowProfileList(true);
             }
           }}
@@ -129,7 +123,7 @@ const App = () => {
     return (
       <div className='flex h-[600px] w-[400px] overflow-hidden'>
         <ProfileList
-          profiles={bookmarkSets}
+          profiles={profiles}
           onSelectProfile={handleSelectProfile}
           onCreateProfile={handleCreateProfile}
           isLoading={isLoadingProfiles}
