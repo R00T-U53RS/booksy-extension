@@ -14,12 +14,10 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 const Sidebar = ({
-  setBrowser,
   onLogout,
   browsers,
   onShowAddBrowser,
 }: {
-  setBrowser: (browser: Browser) => void;
   onLogout?: () => void;
   browsers: Browser[];
   onShowAddBrowser: () => void;
@@ -61,7 +59,6 @@ const Sidebar = ({
             key={browser.id}
             onClick={() => {
               setActiveSection(browser.id);
-              setBrowser(browser);
             }}
             className={`
               relative flex flex-col items-center justify-center w-14 h-14 rounded-lg cursor-pointer transition-all duration-200

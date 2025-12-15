@@ -1,5 +1,5 @@
 import { BookmarkTreeNode } from '@/components/types/bookmark';
-import { Folder, ExternalLink } from 'lucide-react';
+import { Folder, ExternalLink, Bookmark } from 'lucide-react';
 import {
   Accordion,
   AccordionContent,
@@ -12,13 +12,41 @@ interface BookmarkListProps {
   depth?: number;
 }
 
+const getFaviconUrl = (url: string | undefined): string => {
+  if (!url) {
+    return 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="%23666"><path d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>';
+  }
+  try {
+    const urlObj = new URL(url);
+    return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=16`;
+  } catch {
+    return 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="%23666"><path d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>';
+  }
+};
+
 const BookmarkItem = ({ bookmark, depth = 0 }: BookmarkListProps) => {
   const indentClass = depth > 0 ? `ml-${depth * 4}` : '';
+
+  if (!bookmark || bookmark.length === 0) {
+    return (
+      <div className='flex items-start justify-between px-8 py-1 text-center'>
+        <Bookmark className='w-8 h-8 text-gray-300 mb-4' />
+        <div className='flex flex-col items-center justify-center'>
+          <p className='text-gray-500 text-sm font-medium'>
+            No bookmarks found
+          </p>
+          <p className='text-gray-400 text-xs mt-1'>
+            Your bookmarks will appear here
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='space-y-2'>
       {bookmark.map((item, index) => {
-        const isFolder = !item.url && item.children;
+        const isFolder = !!item.children;
 
         return (
           <div key={item.id || index} className={indentClass}>
@@ -37,12 +65,10 @@ const BookmarkItem = ({ bookmark, depth = 0 }: BookmarkListProps) => {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className='pt-2 pb-0'>
-                    {item.children && item.children.length > 0 && (
-                      <BookmarkItem
-                        bookmark={item.children}
-                        depth={depth + 1}
-                      />
-                    )}
+                    <BookmarkItem
+                      bookmark={item.children ?? []}
+                      depth={depth + 1}
+                    />
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
@@ -50,9 +76,7 @@ const BookmarkItem = ({ bookmark, depth = 0 }: BookmarkListProps) => {
               <div className='flex items-center p-3 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer group min-h-[60px]'>
                 <div className='flex items-center gap-3 flex-1 min-w-0'>
                   <img
-                    src={`https://www.google.com/s2/favicons?domain=${
-                      new URL(item.url || '').hostname
-                    }&sz=16`}
+                    src={getFaviconUrl(item.url)}
                     alt=''
                     className='w-4 h-4 flex-shrink-0'
                     onError={e => {
