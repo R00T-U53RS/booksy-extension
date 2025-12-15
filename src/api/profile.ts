@@ -1,4 +1,5 @@
 import { apiClient } from '@/api/client';
+import { BookmarkTreeNode } from '@/components/types/bookmark';
 
 export interface Profile {
   id: string;
@@ -22,5 +23,12 @@ export const profileApi = {
   create: async (data: CreateProfileRequest): Promise<Profile> => {
     const response = await apiClient.post<Profile>('/profile', data);
     return response.data;
+  },
+
+  syncBookmarks: async (
+    profileId: string,
+    bookmarks: BookmarkTreeNode
+  ): Promise<void> => {
+    await apiClient.post(`/profiles/${profileId}/bookmarks/sync`, [bookmarks]);
   },
 };

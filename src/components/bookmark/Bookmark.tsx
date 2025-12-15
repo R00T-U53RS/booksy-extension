@@ -19,7 +19,7 @@ const Bookmark = ({ profile }: { profile: BrowserDisplayInfo }) => {
 
   return (
     <div className='flex flex-col h-full w-full min-w-0'>
-      <BookmarkHeader profile={profile} />
+      <BookmarkHeader profile={profile} bookmarks={bookmark} />
       <div className='flex-1 overflow-y-auto hide-scrollbar'>
         {bookmark?.children ? (
           <BookmarkList bookmark={bookmark.children} />

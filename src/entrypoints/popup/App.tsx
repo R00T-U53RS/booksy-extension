@@ -28,8 +28,13 @@ const App = () => {
 
   // Load selected profile from localStorage and check if it still exists
   useEffect(() => {
-    if (isAuthenticated && !isLoadingProfiles && profiles.length > 0) {
+    if (!isAuthenticated || isLoadingProfiles) {
+      return;
+    }
+
+    if (profiles.length > 0) {
       const selectedProfileId = localStorage.getItem(SELECTED_PROFILE_KEY);
+
       if (selectedProfileId) {
         const profile = profiles.find(p => p.id === selectedProfileId);
         if (profile) {
@@ -37,10 +42,14 @@ const App = () => {
           setShowProfileList(false);
           return;
         }
+
+        localStorage.removeItem(SELECTED_PROFILE_KEY);
       }
-      // If no selected profile or selected profile doesn't exist, show profile list
-      setShowProfileList(true);
-    } else if (isAuthenticated && !isLoadingProfiles && profiles.length === 0) {
+
+      if (!selectedProfile) {
+        setShowProfileList(true);
+      }
+    } else {
       // No profiles exist, show profile list (which will show create option)
       setShowProfileList(true);
     }
