@@ -2,7 +2,7 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { BackendErrorResponse } from '@/components/types/login';
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || 'http://localhost:3002';
+  import.meta.env.VITE_API_BASE_URL || 'http://localhost:4321';
 const TOKEN_KEY = 'booksy_access_token';
 
 export const getToken = (): string | null => {
